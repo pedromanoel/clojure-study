@@ -14,3 +14,8 @@
     (testing "stack access"
       (is (= :a (peek list)))
       (is (= '(:b :c) (pop list))))))
+(deftest for-test
+  (is (= '([1 :a] [1 :b] [2 :a] [2 :b])
+         (for [num [1 2]
+               letter [:a :b]]
+           [num letter]))))
