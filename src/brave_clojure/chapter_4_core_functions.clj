@@ -27,3 +27,14 @@
         acc))))
 (defn filter-entries-with-reduce [threshold map-to-be-filtered]
   (reduce (filter-below threshold) {} map-to-be-filtered))
+
+(defn some-reduce [f coll]
+  (let [none-found false
+        truthy-element (fn [has-some element] (or has-some (f element)))]
+    (reduce truthy-element none-found coll)))
+
+;(defn filter-reduce [f coll]
+;  (reduce (fn [acc el]
+;            (if (f el)
+;              (conj el acc)
+;              acc)) [] coll))

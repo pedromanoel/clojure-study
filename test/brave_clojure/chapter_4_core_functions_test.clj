@@ -34,3 +34,8 @@
 (deftest filter-entries-with-reduce-test
   (is (= {"Apple" 10 "Banana" 12}
          (filter-entries-with-reduce 9 {"Apple" 10 "Banana" 12 "Peach" 3}))))
+
+(deftest reduce-test
+  (is (true? (some-reduce odd? [2 4 6 7])))
+  (is (false? (some-reduce odd? [2 4 6])))
+  (is (= 3 (some-reduce #(and (odd? %) %) [2 4 3 6]))))
