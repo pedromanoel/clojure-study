@@ -18,3 +18,12 @@
 
 (defn inc-map-with-reduce [map]
   (reduce #(conj %1 (inc-val %2)) {} map))
+
+(defn- filter-below [threshold]
+  (fn [acc entry]
+    (let [val (second entry)]
+      (if (> val threshold)
+        (conj acc entry)
+        acc))))
+(defn filter-entries-with-reduce [threshold map-to-be-filtered]
+  (reduce (filter-below threshold) {} map-to-be-filtered))

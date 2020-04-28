@@ -30,3 +30,7 @@
 
 (deftest inc-map-with-reduce-test
   (is (= {:bla 20 :blu 30} (inc-map-with-reduce {:bla 19 :blu 29}))))
+
+(deftest filter-entries-with-reduce-test
+  (is (= {"Apple" 10 "Banana" 12}
+         (filter-entries-with-reduce 9 {"Apple" 10 "Banana" 12 "Peach" 3}))))
