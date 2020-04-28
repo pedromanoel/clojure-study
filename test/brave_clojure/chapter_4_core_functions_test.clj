@@ -1,6 +1,6 @@
 (ns brave-clojure.chapter-4-core-functions-test
   (:require [clojure.test :refer :all])
-  (:require [brave-clojure.chapter-4-core-functions :refer [stats]]))
+  (:require [brave-clojure.chapter-4-core-functions :refer :all]))
 
 (deftest seq-test
   (testing "first, rest & cons"
@@ -25,3 +25,8 @@
 (deftest stats-test
   (testing "stats return average"
     (is (= {:avg 2 :count 3 :sum 6} (stats [1 2 3])))))
+
+(conj {:one 1} [:two 2])
+
+(deftest inc-map-with-reduce-test
+  (is (= {:bla 20 :blu 30} (inc-map-with-reduce {:bla 19 :blu 29}))))
