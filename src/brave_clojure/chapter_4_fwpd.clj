@@ -36,4 +36,26 @@
 
 (defn glitter-filter
   [minimum-glitter records]
-  (filter #(>= (:glitter-index %) minimum-glitter) records))
+  (map #(:name %) (filter #(>= (:glitter-index %) minimum-glitter) records)))
+
+(def validations {:glitter-index number? :name #(and (string? %) (not (str/blank? %)))})
+
+(defn validate [validations record]
+  (reduce (fn
+            [is-valid [key validation]]
+            (and is-valid (contains? record key) (validation (key record))))
+          true
+          validations))
+
+(defn append
+  [suspects new-suspect]
+  (if (validate validations new-suspect)
+    (conj suspects new-suspect)
+    suspects))
+
+(defn map->csv
+  [suspects]
+  (->> suspects
+       (map #(str/join "," (vals %)))
+       (str/join "\n"))
+  )
