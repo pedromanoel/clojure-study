@@ -1,0 +1,3 @@
+[submodule "pegthing"]
+	path = pegthing
+	url = git@github.com:flyingmachine/pegthing.git
