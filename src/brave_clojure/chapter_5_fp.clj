@@ -1,4 +1,5 @@
-(ns brave-clojure.chapter-5-fp)
+(ns brave-clojure.chapter-5-fp
+  (:require [clojure.string :as str]))
 (require '[clojure.string :as s])
 
 (defn sum
@@ -42,6 +43,14 @@
   ((comp int inc #(/ % 2) c-int) char))
 
 (defn my-comp
-  "implement a composition function"
-  ([f] (fn [args] apply f args))
-  ([f g] (f g)))
+  "implement a function composition"
+  ([f] f)
+  ([f g] (fn [& args] (f (apply g args))))
+  ([f g & fs]
+   (reduce my-comp (list* f g fs))))
+
+(defn to-uppercase-with-call-history
+  [call-history string]
+  (do
+    (.append call-history string)
+    (str/upper-case string)))
