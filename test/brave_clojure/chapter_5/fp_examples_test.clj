@@ -1,6 +1,6 @@
-(ns brave-clojure.chapter-5-fp-test
+(ns brave-clojure.chapter-5.fp-examples-test
   (:require [clojure.test :refer :all])
-  (:require [brave-clojure.chapter-5-fp :refer :all]))
+  (:require [brave-clojure.chapter-5.fp-examples :refer :all]))
 
 (deftest sum-test
   (is (= 10 (sum [1 2 3 4]))))

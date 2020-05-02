@@ -1,4 +1,4 @@
-(ns brave-clojure.chapter-4-core-functions)
+(ns brave-clojure.chapter-4.core-functions-example)
 
 (defn- sum [numbers] (reduce + numbers))
 (defn- average [numbers] (/ (sum numbers) (count numbers)))

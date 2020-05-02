@@ -1,6 +1,6 @@
-(ns brave-clojure.chapter-4-fwpd-test
+(ns brave-clojure.chapter-4.fwpd-examples-test
   (:require [clojure.test :refer :all])
-  (:require [brave-clojure.chapter-4-fwpd :refer :all]))
+  (:require [brave-clojure.chapter-4.fwpd-examples :refer :all]))
 
 (deftest convert-test
   (is (= 3 (convert :glitter-index "3"))))
@@ -55,5 +55,3 @@
       (is (false? (validate {:new-key #(true)} record))))
     (testing "validate multiple keys"
       (is (true? (validate {:name string? :glitter-index number?} record))))))
-
-

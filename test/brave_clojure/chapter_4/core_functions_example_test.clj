@@ -1,6 +1,6 @@
-(ns brave-clojure.chapter-4-core-functions-test
+(ns brave-clojure.chapter-4.core-functions-example-test
   (:require [clojure.test :refer :all])
-  (:require [brave-clojure.chapter-4-core-functions :refer :all]))
+  (:require [brave-clojure.chapter-4.core-functions-example :refer :all]))
 
 (deftest seq-test
   (testing "first, rest & cons"

@@ -1,6 +1,5 @@
-(ns brave-clojure.chapter-5-fp
-  (:require [clojure.string :as str]))
-(require '[clojure.string :as s])
+(ns brave-clojure.chapter-5.fp-examples
+  (:require [clojure.string :as s]))
 
 (defn sum
   "Example using recursion for looping in a sequence"
@@ -53,4 +52,4 @@
   [call-history string]
   (do
     (.append call-history string)
-    (str/upper-case string)))
+    (s/upper-case string)))
