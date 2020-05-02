@@ -21,4 +21,4 @@
 
 (defn run-tests
   ([] (ef/run-tests (ef/find-tests "test")))
-  ([file-path] (ef/run-tests (ef/find-tests file-path))))
+  ([file-path] (ef/run-tests (ef/find-tests (normalize-to-test-file file-path)))))
