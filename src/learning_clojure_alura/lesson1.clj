@@ -9,6 +9,6 @@
   (if-let [id (:id patient)]
     (assoc patients id patient)
     (throw (ex-info "Patient missing ID" {:patient patient}))))
-
-(seq (map->Patient {:name "Name" :declared-gender "Fox"}))
+(seq
+  (map->Patient {:name "Name" :declared-gender "Fox"}))
 
