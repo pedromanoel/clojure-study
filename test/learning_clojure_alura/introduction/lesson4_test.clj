@@ -3,7 +3,7 @@
   (:require [learning-clojure-alura.introduction.lesson4 :refer :all]))
 
 (deftest collections-test
-  (testing "vector"
+  (testing "vector collection"
     (testing "access with call"
       (is (= 30 (prices 0)))
       (is (= 1000 (prices 2)))
@@ -17,4 +17,8 @@
       (is (= 5000 (last (conj prices 5000)))))
     (testing "update value"
       (is (= 31 (first (update prices 0 inc))))
-      (is (= 31 (first (update prices 0 inc)))))))
+      (is (= 31 (first (update prices 0 inc))))))
+  (testing "map collection"
+    (let [pet {:name "Ginger" :age 5}]
+      (testing "update value"
+        (is (= 6 (:age (update pet :age inc))))))))
