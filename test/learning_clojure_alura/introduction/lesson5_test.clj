@@ -52,7 +52,14 @@
            (update storage :backpack inc)))
     (is (= {:backpack 7
             :shirt    5}
-           (update storage :backpack #(- % 3)))))
+           (update storage :backpack #(- % 3))))
+    (is (= 8
+           (:quantity (:backpack (update-in order [:backpack :quantity] inc))))))
+
+  (testing "threading"
+    (is (= 7 (-> order
+                 :backpack
+                 :quantity))))
 
   (testing "nested maps"
     (let [keychain-order {:quantity 1 :price 10}
