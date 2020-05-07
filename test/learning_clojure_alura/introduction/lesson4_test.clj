@@ -30,7 +30,4 @@
     (testing "update value"
       (is (= 31 (first (update prices 0 inc))))
       (is (= 31 (first (update prices 0 inc))))))
-  (testing "map collection"
-    (let [pet {:name "Ginger" :age 5}]
-      (testing "update value"
-        (is (= 6 (:age (update pet :age inc))))))))
+  )
