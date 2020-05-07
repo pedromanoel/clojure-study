@@ -2,6 +2,18 @@
   (:require [clojure.test :refer :all])
   (:require [learning-clojure-alura.introduction.lesson4 :refer :all]))
 
+(deftest collection-functions-test
+  (testing "map function"
+    (is (= [30 700 1000] prices))
+    (is (= [30 630 900] discounted-prices)))
+  (testing "filter function"
+    (is (= [0 2 4 6 8] even-numbers))
+    (is (= [700 1000] prices-to-discount)))
+  (testing "filter then map"
+    (is (= [630 900] discounted-prices-only)))
+  (testing "reduce"
+    (is (= 1730 total-prices))))
+
 (deftest collections-test
   (testing "vector collection"
     (testing "access with call"
