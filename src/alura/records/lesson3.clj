@@ -7,7 +7,9 @@
   {:id id :downloaded-at (m.logic/this-moment clock)})
 
 (defn download-if-not-present
-  [patients id log clock]
-  (if (contains? patients id)
-    (get patients id)
-    (download-patient id log clock)))
+  ([cache id downloader]
+   (if (contains? cache id)
+     (get cache id)
+     (downloader id)))
+  ([cache id log clock]
+   (download-if-not-present cache id #(download-patient % log clock))))
