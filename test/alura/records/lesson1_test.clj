@@ -16,6 +16,7 @@
         (is (= ID (:id patient)))
         (is (= NAME (:name patient)))
         (is (= BIRTH-DATE (:birth-date patient)))))
+
     (testing "with map construction"
       (testing "passing extra attributes"
         (let [patient (map->Patient
@@ -28,16 +29,24 @@
         (let [patient (map->Patient {:birth-date BIRTH-DATE})]
           (is (nil? (:id patient)))
           (is (nil? (:name patient))))))
+
     (testing "check if record"
       (is (record? (map->Patient {}))))
+
     (let [patient (map->Patient
                     {:id         ID
                      :name       NAME
                      :birth-date BIRTH-DATE})]
+      (testing "Record cannot be called like function"
+        (is (thrown-with-msg?
+              ClassCastException
+              #"cannot be cast to class clojure.lang.IFn"
+              (patient :id))))
+
       (testing "Record acts like a map"
-        (testing "access attributes with call"
+        (testing "when accessing attributes with call"
           (is (= ID (:id patient))))
-        (testing "access attributes with get"
+        (testing "when access attributes with get"
           (is (= NAME (get patient :name))))
         (testing "when used with seq"
           (is (= [[:id ID]
@@ -50,6 +59,7 @@
           (is (= "Someone Else" (:name (assoc patient :name "Someone Else")))))
         (testing "when dissoc attribute"
           (is (nil? (:id (dissoc patient :id))))))
+
       (testing "Record can act as a java class"
         (is (= BIRTH-DATE (.birth_date patient)))))))
 
@@ -60,6 +70,7 @@
     (testing "Add patient to patients collection"
       (is (= {15 william}
              (add-patient william patients))))
+
     (testing "Add patient with no id"
       (try
         (add-patient unidentified patients)
