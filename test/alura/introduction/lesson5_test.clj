@@ -1,6 +1,6 @@
-(ns learning-clojure-alura.introduction.lesson5-test
+(ns alura.introduction.lesson5-test
   (:require [clojure.test :refer :all]
-            [learning-clojure-alura.introduction.lesson5 :refer :all]))
+            [alura.introduction.lesson5 :refer :all]))
 
 (deftest map-test
   (testing "accessing values"

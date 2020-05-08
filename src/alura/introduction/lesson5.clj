@@ -1,4 +1,4 @@
-(ns learning-clojure-alura.introduction.lesson5)
+(ns alura.introduction.lesson5)
 
 (def storage-string-keys
   {"Backpack" 10

@@ -1,6 +1,6 @@
-(ns learning-clojure-alura.introduction.lesson3-test
+(ns alura.introduction.lesson3-test
   (:require [clojure.test :refer :all])
-  (:require [learning-clojure-alura.introduction.lesson3 :refer :all]))
+  (:require [alura.introduction.lesson3 :refer :all]))
 
 (deftest discounted-price-test
   (testing "Apply discount with declared function"

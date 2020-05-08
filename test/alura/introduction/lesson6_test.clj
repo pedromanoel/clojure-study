@@ -1,6 +1,6 @@
-(ns learning-clojure-alura.introduction.lesson6-test
+(ns alura.introduction.lesson6-test
   (:require [clojure.test :refer :all]
-            (learning-clojure-alura.introduction
+            (alura.introduction
               [lesson5 :refer [order]]
               [lesson6 :refer :all]))
   (:import (clojure.lang MapEntry)))

@@ -1,6 +1,6 @@
-(ns learning-clojure-alura.introduction.lesson2-test
+(ns alura.introduction.lesson2-test
   (:require [clojure.test :refer :all])
-  (:require [learning-clojure-alura.introduction.lesson2 :refer [discounted-price]]))
+  (:require [alura.introduction.lesson2 :refer [discounted-price]]))
 
 (deftest discounted-price-test
   (testing "Apply discount when larger than 100"

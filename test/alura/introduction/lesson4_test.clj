@@ -1,6 +1,6 @@
-(ns learning-clojure-alura.introduction.lesson4-test
+(ns alura.introduction.lesson4-test
   (:require [clojure.test :refer :all])
-  (:require [learning-clojure-alura.introduction.lesson4 :refer :all]))
+  (:require [alura.introduction.lesson4 :refer :all]))
 
 (deftest collection-functions-test
   (testing "map function"

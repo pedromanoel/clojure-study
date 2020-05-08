@@ -1,13 +1,13 @@
-(ns learning-clojure-alura.introduction.lesson3)
+(ns alura.introduction.lesson2)
 
-(defn more-expensive-than-100?
+(defn must-apply-discount?
   [original-price]
   (> original-price 100))
 
 (defn discounted-price
   "Return the original price with 10% discount when value greater than 100"
-  [will-apply? original-price]
-  (if (will-apply? original-price)
+  [original-price]
+  (if (must-apply-discount? original-price)
     (let [discount-rate (/ 10 100)
           discount (* original-price discount-rate)]
       (- original-price discount))

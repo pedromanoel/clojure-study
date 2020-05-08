@@ -1,5 +1,5 @@
-(ns learning-clojure-alura.introduction.lesson6
-  (:require [learning-clojure-alura.introduction.lesson5 :refer [order]]))
+(ns alura.introduction.lesson6
+  (:require [alura.introduction.lesson5 :refer [order]]))
 
 (defn product-total-price
   [order]

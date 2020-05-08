@@ -1,5 +1,5 @@
-(ns learning-clojure-alura.introduction.lesson4
-  (:require [learning-clojure-alura.introduction.lesson2
+(ns alura.introduction.lesson4
+  (:require [alura.introduction.lesson2
              :refer [must-apply-discount? discounted-price]]))
 
 (def prices [30 700 1000])

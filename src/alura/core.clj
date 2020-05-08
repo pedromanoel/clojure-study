@@ -1,4 +1,4 @@
-(ns learning-clojure-alura.core)
+(ns alura.core)
 
 (defn foo
   "I don't do a whole lot."
