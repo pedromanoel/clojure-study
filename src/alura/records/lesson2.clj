@@ -1,4 +1,25 @@
-(ns alura.records.lesson2)
+(ns alura.records.lesson2
+  (:import (java.time LocalDateTime ZoneId)))
+
+(defprotocol Dateable
+  (to-ms [this]))
+
+(extend-type Number Dateable
+  (to-ms [this] this))
+
+(extend-type LocalDateTime Dateable
+  (to-ms [this]
+    (let [zone (ZoneId/systemDefault)]
+      (-> this
+          (.atZone zone)
+          .toInstant
+          .toEpochMilli))))
+
+(extend-type String Dateable
+  (to-ms [this]
+    (-> this
+        LocalDateTime/parse
+        to-ms)))
 
 (defrecord Patient [id name birth-date])
 (defrecord PrivatePatient [id name birth-date])
