@@ -1,8 +1,8 @@
-(ns alura.lesson1-test
+(ns alura.records.lesson1-test
   (:require [clojure.test :refer :all])
-  (:require [alura.lesson1 :refer :all])
+  (:require [alura.records.lesson1 :refer :all])
   (:import (clojure.lang ExceptionInfo)
-           (alura.lesson1 Patient)))
+           (alura.records.lesson1 Patient)))
 
 (def ID 1)
 (def NAME "Name")
