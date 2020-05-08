@@ -36,3 +36,15 @@
   (is (false? (paid? [:order-key  {:quantity 3 :price 0}])))
   (is (false? (paid? [:order-key {:quantity 3}])))
   (is (true? (paid? [:order-key {:quantity 3 :price 1}]))))
+
+(deftest map-reduce-test
+  (let [clients [{:name         "William"
+                  :certificates ["Clojure" "Java" "Machine Learning"]}
+                 {:name "Paul"
+                  :certificates ["Java" "Computer Science"]}
+                 {:name "Daniela"
+                  :certificates ["Architecture" "Cooking"]}]]
+    (is (= 7 (->> clients
+                  (map :certificates)
+                  (map count)
+                  (reduce +))))))
