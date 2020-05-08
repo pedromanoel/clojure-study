@@ -31,7 +31,7 @@
     (>= cost 50)
     (if (= InsuredPatient (type patient))
       (let [covered-exams (:health-insurance patient [])]
-        (not (some #(= % exam) covered-exams)))
+        (not-any? #(= % exam) covered-exams))
       true)))
 
 (defprotocol Authorizable
@@ -44,7 +44,7 @@
 (extend-type InsuredPatient Authorizable
   (patient-needs-authorization? [patient exam _cost]
     (let [covered-exams (:health-insurance patient [])]
-      (not (some #(= % exam) covered-exams)))))
+      (not-any? #(= % exam) covered-exams))))
 
 (extend-type Patient Authorizable
   (patient-needs-authorization? [_patient _exam _cost]
