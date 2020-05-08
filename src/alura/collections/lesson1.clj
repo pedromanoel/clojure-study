@@ -13,6 +13,6 @@
    (my-map function sequence []))
   ([function sequence result]
    (let [first-element (first sequence)]
-     (if (nil? first-element)
+     (if (empty? sequence)
        result
        (my-map function (rest sequence) (conj result (function first-element)))))))

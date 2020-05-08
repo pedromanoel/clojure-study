@@ -14,6 +14,9 @@
   (is (nil? (next []))))
 
 (deftest my-map-test
-  (is (= ["1" "2" "3"] (my-map str [1 2 3])) "iterate over list")
-  (is (= ["1" "false" "3"] (my-map str [1 false 3])) "iterate false values")
+  (is (= [] (my-map str nil)) "do not map over nil")
+  (is (= [] (my-map str [])) "do not map over empty list")
+  (is (= ["1" "2" "3"] (my-map str [1 2 3])) "map over list")
+  (is (= ["1" "false" "3"] (my-map str [1 false 3])) "map false values")
+  (is (= ["1" "" "3"] (my-map str [1 nil 3])) "map nil values")
   )
