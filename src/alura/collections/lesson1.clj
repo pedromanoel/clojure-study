@@ -15,4 +15,4 @@
    (let [first-element (first sequence)]
      (if (empty? sequence)
        result
-       (my-map function (rest sequence) (conj result (function first-element)))))))
+       (recur function (rest sequence) (conj result (function first-element)))))))
