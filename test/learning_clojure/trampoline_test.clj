@@ -28,4 +28,13 @@
       (is (= :b (processed-state-machine [:a->c :c->b]))))
     (testing "to :final"
       (is (= :final (processed-state-machine [:a->c :final])))))
+  (testing "several transactions"
+    (is (= :final (processed-state-machine [:a->b
+                                            :b->a
+                                            :a->c
+                                            :c->a
+                                            :a->c
+                                            :c->b
+                                            :b->c
+                                            :final]))))
   )
