@@ -21,3 +21,13 @@
   (let [summary (c.lesson4/orders-summary-sorted-by-price c.db/orders)]
     (is (= [80 160 180]
            (map :total-price summary)))))
+
+(deftest positional-access-test
+  (let [a-list '(1 2 3)
+        a-vector [1 2 3]]
+    (testing "access with get"
+      (is (nil? (get a-list 1)))
+      (is (= 2 (get a-vector 1))))
+    (testing "access with nth"
+      (is (= 2 (nth a-list 1)))
+      (is (= 2 (nth a-vector 1))))))
