@@ -23,3 +23,29 @@
   (class [])
   [arg]
   (count arg))
+
+(defn authorizer-type
+  [{patient :patient
+    situation :situation}]
+  (let [urgent? (= :urgent situation)]
+    (if urgent?
+      :always-authorize
+      (class patient))))
+
+(defmulti needs-authorization-for-request? authorizer-type)
+
+(defmethod needs-authorization-for-request?
+  PrivatePatient
+  [{cost :cost}]
+  (>= cost 50))
+
+(defmethod needs-authorization-for-request?
+  InsuredPatient
+  [{{health-insurance :health-insurance} :patient
+    exam :exam}]
+  (not-any? #(= % exam) health-insurance))
+
+(defmethod needs-authorization-for-request?
+  :always-authorize
+  [request]
+  false)

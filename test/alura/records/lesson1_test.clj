@@ -40,7 +40,7 @@
       (testing "Record cannot be called like function"
         (is (thrown-with-msg?
               ClassCastException
-              #"cannot be cast to class clojure.lang.IFn"
+              #"cannot be cast to clojure.lang.IFn"
               (patient :id))))
 
       (testing "Record acts like a map"
