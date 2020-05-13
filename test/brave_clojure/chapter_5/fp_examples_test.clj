@@ -1,6 +1,13 @@
 (ns brave-clojure.chapter-5.fp-examples-test
   (:require [clojure.test :refer :all])
-  (:require [brave-clojure.chapter-5.fp-examples :refer :all]))
+  (:require [brave-clojure.chapter-5.fp-examples :refer :all])
+  (:import (java.io StringWriter)))
+
+(defn capture-out [f]
+  (binding [*out* (StringWriter.)]
+    (f)))
+
+(use-fixtures :each capture-out)
 
 (deftest sum-test
   (is (= 10 (sum [1 2 3 4]))))
@@ -31,12 +38,11 @@
 
 (deftest memoize-test
   (testing "Memoized function don't call when parameters are the same"
-    (let [call-history (StringBuffer.)
-          memoized-to-uppercase (memoize to-uppercase-with-call-history)]
-      (is (= "A" (to-uppercase-with-call-history call-history "a")))
-      (is (= "A" (to-uppercase-with-call-history call-history "a")))
-      (is (= "A" (to-uppercase-with-call-history call-history "a")))
-      (is (= "B" (memoized-to-uppercase call-history "b")))
-      (is (= "B" (memoized-to-uppercase call-history "b")))
-      (is (= "B" (memoized-to-uppercase call-history "b")))
-      (is (= "aaab" (.toString call-history))))))
+    (let [memoized-to-uppercase (memoize to-uppercase-with-side-effect)]
+      (is (= "A" (to-uppercase-with-side-effect print "a")))
+      (is (= "A" (to-uppercase-with-side-effect print "a")))
+      (is (= "A" (to-uppercase-with-side-effect print "a")))
+      (is (= "B" (memoized-to-uppercase print "b")))
+      (is (= "B" (memoized-to-uppercase print "b")))
+      (is (= "B" (memoized-to-uppercase print "b")))
+      (is (= "aaab" (str *out*))))))

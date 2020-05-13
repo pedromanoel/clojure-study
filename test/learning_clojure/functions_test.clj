@@ -42,19 +42,18 @@
 
 (deftest triplicate-test
   (testing "exercise 7 - call function three times"
-    (let [strBuilder (StringBuilder.)
-          appendStr (fn [] (.append strBuilder "oi"))]
-      (triplicate appendStr)
-      (is (= "oioioi" (.toString strBuilder))))))
+    (let [say-hello (fn [] (print "oi"))
+          output-str (with-out-str
+                       (triplicate say-hello))]
+      (is (= "oioioi" output-str)))))
 
 (deftest triplicate2-test
   (testing "exercise 9 - triplicate function call with args"
-    (let [strBuilder (StringBuilder.),
-          appendStr (fn [& args]
-                      (let [fullString (reduce str args)]
-                        (.append strBuilder fullString)))]
-      (triplicate2 appendStr "1" "2" "3")
-      (is (= "123123123" (.toString strBuilder)))))
+    (let [say-hello-with-args (fn [& args]
+                                (print (reduce str args)))
+          output-str (with-out-str
+                       (triplicate2 say-hello-with-args "1" "2" "3"))]
+      (is (= "123123123" output-str))))
   )
 
 (deftest math-test

@@ -1,6 +1,13 @@
 (ns learning-clojure.control-flow-test
   (:require [clojure.test :refer :all])
-  (:require [learning-clojure.control-flow :refer [is-truthy?]]))
+  (:require [learning-clojure.control-flow :refer [is-truthy?]])
+  (:import (java.io StringWriter)))
+
+(defn capture-out [f]
+  (binding [*out* (StringWriter.)]
+    (f)))
+
+(use-fixtures :each capture-out)
 
 (deftest is-truthy?-test
   (testing "truthy values"
@@ -34,11 +41,10 @@
 
 (deftest do-test
   (testing "do allows calling several forms in one call"
-    (let [stringBuilder (StringBuilder.)]
-      (do
-        (.append stringBuilder "um")
-        (.append stringBuilder ", ")
-        (.append stringBuilder "dois")
-        (.append stringBuilder ", ")
-        (.append stringBuilder "tres"))
-      (is (= "um, dois, tres" (.toString stringBuilder))))))
+    (do
+      (print "um")
+      (print ", ")
+      (print "dois")
+      (print ", ")
+      (print "tres"))
+    (is (= "um, dois, tres" (str *out*)))))

@@ -48,8 +48,8 @@
   ([f g & fs]
    (reduce my-comp (list* f g fs))))
 
-(defn to-uppercase-with-call-history
-  [call-history string]
+(defn to-uppercase-with-side-effect
+  [f string]
   (do
-    (.append call-history string)
+    (f string)
     (s/upper-case string)))
