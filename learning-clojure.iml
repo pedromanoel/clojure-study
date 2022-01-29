@@ -24,6 +24,7 @@
     <orderEntry type="library" name="Leiningen: org.clojure/core.rrb-vector:0.0.14" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.specs.alpha:0.2.44" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/spec.alpha:0.2.176" level="project" />
+    <orderEntry type="library" name="Leiningen: org.clojure/test.check:1.1.1" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/tools.namespace:0.2.11" level="project" />
     <orderEntry type="library" name="Leiningen: progrock:0.1.2" level="project" />
   </component>
