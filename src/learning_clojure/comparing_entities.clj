@@ -1,40 +1,59 @@
 (ns learning-clojure.comparing-entities
   (:require [clojure.data :as data]))
 
-(defn diff-first-and-second
-  [id-attr entities-second]
-  (fn [first-entity]
-    (let [first-id              (id-attr first-entity)
-          second-entities-by-id (group-by id-attr entities-second)
-          maybe-second-entity   (get-in second-entities-by-id [first-id 0])]
-      (when-some [in-first-only (first (data/diff first-entity maybe-second-entity))]
-        (assoc in-first-only id-attr first-id)))))
-
-(defn attrs-in-first-not-in-second
-  [id-attr entities-first entities-second]
-  (->> (filter id-attr entities-first)
-       (map (diff-first-and-second id-attr entities-second))
+(defn all-ids
+  [{:keys [before-by-id after-by-id]}]
+  (->> (merge before-by-id after-by-id)
+       keys
        (remove nil?)))
 
 (defn entity-delta
-  [before after]
-  (fn [id-attr]
-    {id-attr
-     {:added     (attrs-in-first-not-in-second id-attr after before)
-      :retracted (attrs-in-first-not-in-second id-attr before after)}}))
+  [{:keys [before-by-id after-by-id]} id]
+  (let [[retracted added] (data/diff (get before-by-id id {})
+                                     (get after-by-id id {}))]
+    {id {:retracted retracted
+         :added     added}}))
+
+(defn entity-deltas-by-id
+  [entities-by-id]
+  (into {}
+        (map (partial entity-delta entities-by-id))
+        (all-ids entities-by-id)))
+
+(defn map-vals [f m]
+  (into {}
+        (map (fn [[k v]] [k (f v)]))
+        m))
+
+(defn grouped-by-id
+  [entities id-attr]
+  (->> entities
+       (group-by id-attr)
+       (map-vals first)))
+
+(defn entity-deltas-for-id-attr
+  [entities-before entities-after id-attr]
+  (let [entities-by-id {:before-by-id (grouped-by-id entities-before id-attr)
+                        :after-by-id  (grouped-by-id entities-after id-attr)}]
+    {id-attr (entity-deltas-by-id entities-by-id)}))
 
 (defn entities-delta
-  "Return the added and retracted attributes of entities by comparing before and after.
+  "Return the added and retracted attributes of entities by comparing entities before and after.
 
-  `id-attrs` - The attributes used to identify an entity.
-               Must be namespaced keywords named `id`. eg: :person/id
-  `before `  - A list of entities from before
-  `after`    - A list of entities from after
+  `id-attrs` - The id attributes to be compared. eg: [:person/id]
+  `entities-before `  - A list of entities from before
+  `entities-after`    - A list of entities from after
 
-  Entities with same id are compared and a map with :added and :retracted attributes is created.
-
-  Returns all entities in a single map grouped by id-attr."
-  [id-attrs before after]
-  (->> id-attrs
-       (map (entity-delta before after))
-       (reduce merge)))
+  Returns all added and retracted attributes in a single map grouped by id-attr, then id.
+  Ex.:
+     ```
+     {:person/id
+      {1234 {:added     {:person/name \"Pedro Manoel\"
+             :retracted {:person/name \"Pedro\"}}}}}
+     ```"
+  [entities-before entities-after id-attrs]
+  (into {}
+       (map (partial entity-deltas-for-id-attr
+                     entities-before
+                     entities-after))
+        id-attrs))

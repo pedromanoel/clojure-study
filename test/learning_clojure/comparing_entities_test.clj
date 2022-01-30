@@ -4,72 +4,88 @@
             [matcher-combinators.matchers :as m]
             [learning-clojure.comparing-entities :as c]))
 
-(deftest bla
-  (let [pikachu-lv1  {:pokemon/id      10
-                      :pokemon/name    "Pikachu"
-                      :pokemon/level   1
-                      :pokemon/moveset [:thundershock :growl]}
-        squirtle-lv1 {:pokemon/id      7
-                      :pokemon/name    "Squirtle"
-                      :pokemon/level   1
-                      :pokemon/moveset [:tackle :tailwhip]}
-        pedro        {:person/id   1000
-                      :person/name "Pedro"
-                      :person/age  37}]
+(def pikachu-lv1 {:pokemon/id      10
+                  :pokemon/name    "Pikachu"
+                  :pokemon/level   1
+                  :pokemon/moveset [:thundershock :growl]})
+(def squirtle-lv1 {:pokemon/id      7
+                   :pokemon/name    "Squirtle"
+                   :pokemon/level   1
+                   :pokemon/moveset [:tackle :tailwhip]})
+(def pedro {:person/id   1000
+            :person/name "Pedro"
+            :person/age  37})
 
-    (testing "return empty when before and after are the same"
-      (is (match? {:pokemon/id {:added     []
-                                :retracted []}}
-                  (c/entities-delta [:pokemon/id]
-                                    [pikachu-lv1 pedro]
-                                    [pikachu-lv1 pedro]))))
+(deftest entities-delta-empty-before-and-after-test
+  (testing "when before and after are empty"
+    (is (match? (m/equals {:pokemon/id (m/equals {})
+                           :person/id  (m/equals {})})
+                (c/entities-delta []
+                                  []
+                                  [:pokemon/id :person/id])))))
 
-    (testing "return new entity when before is empty"
-      (is (match? {:pokemon/id {:added     [(m/equals pikachu-lv1)]
-                                :retracted []}}
-                  (c/entities-delta [:pokemon/id]
-                                    []
-                                    [pikachu-lv1]))))
+(deftest entities-delta-before-and-after-equal-test
+  (testing "return empty when before and after are the same"
+    (is (match? {:pokemon/id
+                 {10 {:added     empty?
+                      :retracted empty?}}}
+                (c/entities-delta [pikachu-lv1 pedro]
+                                  [pikachu-lv1 pedro]
+                                  [:pokemon/id])))))
 
-    (testing "return new entity when before is not empty"
-      (is (match? {:pokemon/id {:added     [(m/equals squirtle-lv1)]
-                                :retracted []}
-                   :person/id  {:added     []
-                                :retracted []}}
-                  (c/entities-delta [:pokemon/id :person/id]
-                                    [pedro pikachu-lv1]
-                                    [pedro pikachu-lv1 squirtle-lv1]))))
+(deftest entities-delta-empty-before-new-after-test
+  (testing "when new entity when before is empty"
+    (is (match? {:pokemon/id
+                 {10 {:added     (m/equals pikachu-lv1)
+                      :retracted empty?}}}
+                (c/entities-delta []
+                                  [pikachu-lv1]
+                                  [:pokemon/id])))))
 
-    (testing "do not return entities when id-attr not given"
-      (is (match? {:pokemon/id m/absent}
-                  (c/entities-delta [:person/id]
-                                    []
-                                    [pedro pikachu-lv1]))))
+(deftest entities-delta-before-not-empty-and-new-after
+  (testing "return new entity when before is not empty"
+    (is (match? {:pokemon/id
+                 {10 {:added     empty?
+                      :retracted empty?}
+                  7  {:added     (m/equals squirtle-lv1)
+                      :retracted empty?}}
+                 :person/id
+                 {1000 {:added     empty?
+                        :retracted empty?}}}
+                (c/entities-delta [pedro pikachu-lv1]
+                                  [pedro pikachu-lv1 squirtle-lv1]
+                                  [:pokemon/id :person/id])))))
 
-    (testing "return changed attributes"
-      (is (match? {:pokemon/id
-                   {:added     [(m/equals {:pokemon/id    10
-                                           :pokemon/level 2})]
-                    :retracted [(m/equals {:pokemon/id    10
-                                           :pokemon/level 1})]}}
-                  (c/entities-delta [:pokemon/id]
-                                    [pikachu-lv1]
-                                    [(assoc pikachu-lv1 :pokemon/level 2)]))))
+(deftest entities-delta-id-attr-not-found-test
+  (testing "do not return entities when id-attr not given"
+    (is (match? {:person/id empty?}
+                (c/entities-delta []
+                                  [pikachu-lv1]
+                                  [:person/id])))))
 
-    (testing "return added attributes"
-      (is (match? {:pokemon/id
-                   {:added     [(m/equals {:pokemon/id   10
-                                           :pokemon/type [:electric]})]
-                    :retracted []}}
-                  (c/entities-delta [:pokemon/id]
-                                    [pikachu-lv1]
-                                    [(assoc pikachu-lv1 :pokemon/type [:electric])]))))
+(deftest entities-delta-attribute-changed-test
+  (testing "return changed attributes"
+    (is (match? {:pokemon/id
+                 {10 {:added     (m/equals {:pokemon/level 2})
+                      :retracted (m/equals {:pokemon/level 1})}}}
+                (c/entities-delta [pikachu-lv1]
+                                  [(assoc pikachu-lv1 :pokemon/level 2)]
+                                  [:pokemon/id])))))
 
-    (testing "return retracted attributes"
-      (is (match? {:pokemon/id
-                   {:added     []
-                    :retracted [(m/equals {:pokemon/id   10
-                                           :pokemon/name "Pikachu"})]}}
-                  (c/entities-delta [:pokemon/id]
-                                    [pikachu-lv1]
-                                    [(dissoc pikachu-lv1 :pokemon/name)]))))))
+(deftest entities-delta-attribute-added-test
+  (testing "return added attributes"
+    (is (match? {:pokemon/id
+                 {10 {:added     (m/equals {:pokemon/type [:electric]})
+                      :retracted empty?}}}
+                (c/entities-delta [pikachu-lv1]
+                                  [(assoc pikachu-lv1 :pokemon/type [:electric])]
+                                  [:pokemon/id])))))
+
+(deftest entities-delta-attribute-retracted-test
+  (testing "return retracted attributes"
+    (is (match? {:pokemon/id
+                 {10 {:added     empty?
+                      :retracted (m/equals {:pokemon/name "Pikachu"})}}}
+                (c/entities-delta [pikachu-lv1]
+                                  [(dissoc pikachu-lv1 :pokemon/name)]
+                                  [:pokemon/id])))))
