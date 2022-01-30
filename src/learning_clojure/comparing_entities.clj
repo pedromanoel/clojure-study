@@ -14,16 +14,9 @@
     {id {:retracted retracted
          :added     added}}))
 
-(defn entity-deltas-by-id
-  [entities-by-id]
-  (into {}
-        (map (partial entity-delta entities-by-id))
-        (all-ids entities-by-id)))
-
 (defn map-vals [f m]
-  (into {}
-        (map (fn [[k v]] [k (f v)]))
-        m))
+  (let [map-val-xf (map (fn [[k v]] [k (f v)]))]
+    (into {} map-val-xf m)))
 
 (defn grouped-by-id-attr
   [entities id-attr]
@@ -33,9 +26,11 @@
 
 (defn entity-deltas-for-id-attr
   [entities-before entities-after id-attr]
-  (let [entities-by-id {:before-by-id (grouped-by-id-attr entities-before id-attr)
-                        :after-by-id  (grouped-by-id-attr entities-after id-attr)}]
-    {id-attr (entity-deltas-by-id entities-by-id)}))
+  (let [entities-by-id  {:before-by-id (grouped-by-id-attr entities-before id-attr)
+                         :after-by-id  (grouped-by-id-attr entities-after id-attr)}
+        entity-delta-xf (map (partial entity-delta entities-by-id))
+        all-ids         (all-ids entities-by-id)]
+    {id-attr (into {} entity-delta-xf all-ids)}))
 
 (defn entities-delta
   "Return the added and retracted attributes of entities by comparing entities before and after.
@@ -53,7 +48,7 @@
      ```"
   [entities-before entities-after id-attrs]
   (into {}
-       (map (partial entity-deltas-for-id-attr
-                     entities-before
-                     entities-after))
+        (map (partial entity-deltas-for-id-attr
+                      entities-before
+                      entities-after))
         id-attrs))
