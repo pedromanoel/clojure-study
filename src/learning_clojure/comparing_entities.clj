@@ -25,7 +25,7 @@
         (map (fn [[k v]] [k (f v)]))
         m))
 
-(defn grouped-by-id
+(defn grouped-by-id-attr
   [entities id-attr]
   (->> entities
        (group-by id-attr)
@@ -33,8 +33,8 @@
 
 (defn entity-deltas-for-id-attr
   [entities-before entities-after id-attr]
-  (let [entities-by-id {:before-by-id (grouped-by-id entities-before id-attr)
-                        :after-by-id  (grouped-by-id entities-after id-attr)}]
+  (let [entities-by-id {:before-by-id (grouped-by-id-attr entities-before id-attr)
+                        :after-by-id  (grouped-by-id-attr entities-after id-attr)}]
     {id-attr (entity-deltas-by-id entities-by-id)}))
 
 (defn entities-delta
