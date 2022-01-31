@@ -11,8 +11,11 @@
   [{:keys [before-by-id after-by-id]} id]
   (let [[retracted added] (data/diff (get before-by-id id {})
                                      (get after-by-id id {}))]
-    {id {:retracted retracted
-         :added     added}}))
+    (if (and (empty? retracted)
+             (empty? added))
+      {}
+      {id {:retracted retracted
+           :added     added}})))
 
 (defn map-vals [f m]
   (let [map-val-xf (map (fn [[k v]] [k (f v)]))]

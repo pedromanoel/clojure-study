@@ -18,17 +18,15 @@
 
 (deftest entities-delta-empty-before-and-after-test
   (testing "when before and after are empty"
-    (is (match? (m/equals {:pokemon/id (m/equals {})
-                           :person/id  (m/equals {})})
+    (is (match? (m/equals {:pokemon/id empty?
+                           :person/id  empty?})
                 (c/entities-delta []
                                   []
                                   [:pokemon/id :person/id])))))
 
 (deftest entities-delta-before-and-after-equal-test
   (testing "return empty when before and after are the same"
-    (is (match? {:pokemon/id
-                 {10 {:added     empty?
-                      :retracted empty?}}}
+    (is (match? {:pokemon/id empty?}
                 (c/entities-delta [pikachu-lv1 pedro]
                                   [pikachu-lv1 pedro]
                                   [:pokemon/id])))))
@@ -45,13 +43,10 @@
 (deftest entities-delta-before-not-empty-and-new-after
   (testing "return new entity when before is not empty"
     (is (match? {:pokemon/id
-                 {10 {:added     empty?
-                      :retracted empty?}
-                  7  {:added     (m/equals squirtle-lv1)
-                      :retracted empty?}}
+                 {7 {:added     (m/equals squirtle-lv1)
+                     :retracted empty?}}
                  :person/id
-                 {1000 {:added     empty?
-                        :retracted empty?}}}
+                 empty?}
                 (c/entities-delta [pedro pikachu-lv1]
                                   [pedro pikachu-lv1 squirtle-lv1]
                                   [:pokemon/id :person/id])))))
