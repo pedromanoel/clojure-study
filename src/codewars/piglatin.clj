@@ -9,6 +9,13 @@
   (-> s
       (string/split #"\s")))
 
+(defn first-last-flop
+  [s]
+  (str (apply str (rest s)) (str (first s)) "ay"))
+
 (comment
  (-> "Pig latin is cool"
-     (string/split #"\s")))
+     (string/split #"\s")
+     ((partial map first-last-flop))
+     ((partial string/join " "))
+     ))
